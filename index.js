@@ -96,6 +96,13 @@ const characters = [
     new Character(70, "Piranha Plant", "packun-flower")
 ];
 
+const serializedData = {
+    "would": "",
+    "maybe": "",
+    "wouldnt": "",
+    "start-list": "",
+};
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -130,14 +137,60 @@ function makeDivEditable() {
     editableText.blur(editableTextBlurred);
 }
 
+function escapeSection(str) {
+    return str.replaceAll('\\&', 'a')
+        .replaceAll('\\[', 'l')
+        .replaceAll('\\]', 'r')
+        .replaceAll('\\=', 'e')
+        .replaceAll('\\.', 'd') + "s";
+}
+
+function addSection(section, element) {
+    section.split("a").forEach(fighter => {
+        $(`#f-${fighter.split("e")[1]}`).appendTo(element);
+    });
+}
+
+function updateUri() {
+    let hash = "";
+
+    hash += escapeSection(serializedData["would"]);
+    hash += escapeSection(serializedData["maybe"]);
+    hash += escapeSection(serializedData["wouldnt"]);
+    hash += escapeSection(serializedData["start-list"]);
+
+    while (hash.length % 4 != 0) {
+        hash += "p";
+    }
+
+    hash = window.atob(hash);
+    window.location.hash = hash;
+}
+
 $(function() {
     const startList = $("#start-list");
     characters.forEach(element => {
         $(`<li><img src="${element.image}" id="fighter-${element.number}" class="fighter" alt="${element.number}: ${element.name}"></li>`).appendTo(startList);
     });
 
+    if (window.location.hash.length > 1) {
+        const decoded = decodeURIComponent(window.location.hash.substring(1));
+        const unhashed = btoa(decoded);
+        const sections = unhashed.replaceAll("p", "").split("s");
+
+        addSection(sections[0], "#would");
+        addSection(sections[1], "#maybe");
+        addSection(sections[2], "#wouldnt");
+        addSection(sections[3], "#start-list");
+    }
+
     $(".connected-sortable").sortable({
-        connectWith: ".connected-sortable"
+        connectWith: ".connected-sortable",
+        update: function(event, ui) {
+            const data = $(this).sortable("serialize");
+            serializedData[this.id] = data;
+            updateUri();
+        }
     }).disableSelection();
 
     $("div.row").click(makeDivEditable);
