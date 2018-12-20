@@ -170,7 +170,7 @@ function updateUri() {
 $(function() {
     const startList = $("#start-list");
     characters.forEach(element => {
-        $(`<li><img src="${element.image}" id="fighter-${element.number}" class="fighter" alt="${element.number}: ${element.name}"></li>`).appendTo(startList);
+        $(`<li id="f-${element.number}"><img class="fighter" src="${element.image}" alt="${element.number}: ${element.name}"></li>`).appendTo(startList);
     });
 
     if (window.location.hash.length > 1) {
