@@ -12,11 +12,11 @@ class Character {
         }
         else {
             this.image = name.toLowerCase()
-                .replaceAll('[\\s\\-]', '_')
+                .replaceAll('\\s', '-')
                 .replaceAll('&', 'and')
                 .replaceAll('\\.', '');
         }
-        this.image = `https://www.smashbros.com/assets_v2/img/fighter/thumb_h/${this.image}.png`;
+        this.image = `./fighters/${this.image}.png`;
     }
 }
 
@@ -93,7 +93,7 @@ const characters = [
     new Character(67, "King K. Rool"),
     new Character(68, "Isabelle", "shizue"),
     new Character(69, "Incineroar", "gaogaen"),
-    new Character(70, "Piranha Plant", "packun_flower")
+    new Character(70, "Piranha Plant", "packun-flower")
 ];
 
 function allowDrop(ev) {
