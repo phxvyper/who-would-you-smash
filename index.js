@@ -82,7 +82,7 @@ const characters = [
     new Character(58, "Bowser Jr."),
     new Character(59, "Duck Hunt"),
     new Character(60, "Ryu"),
-    new Character(60.1, "Ryu"),
+    new Character(60.1, "Ken"),
     new Character(61, "Cloud"),
     new Character(62, "Corrin"),
     new Character(63, "Bayonetta"),
@@ -114,6 +114,21 @@ function makeDivEditable() {
     editableText.blur(editableTextBlurred);
 }
 
+function addColumnToEnd() {
+    $('<div class="column"><div class="row">Title</div><ol style="min-height: 100%;" class="connected-sortable"></ol></div>')
+        .appendTo("#main")
+        
+    $(".connected-sortable").sortable({
+        connectWith: ".connected-sortable"
+    }).disableSelection();
+}
+
+function removeLastColumn() {
+    const toRemove = $("#main").children().last();
+    toRemove.children().appendTo("#start-list");
+    toRemove.remove();
+}
+
 $(function() {
     const startList = $("#start-list");
     characters.forEach(element => {
@@ -125,4 +140,13 @@ $(function() {
     }).disableSelection();
 
     $("div.row").click(makeDivEditable);
+
+    $(document).keypress(function(e) {
+        if (e.which == 61) {
+            addColumnToEnd();
+        }
+        else if (e.which == 45) {
+            removeLastColumn();
+        }
+    });
 });
