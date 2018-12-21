@@ -95,7 +95,8 @@ const characters = [
     new Character(67, "King K. Rool"),
     new Character(68, "Isabelle", "shizue"),
     new Character(69, "Incineroar", "gaogaen"),
-    new Character(70, "Piranha Plant", "packun-flower")
+    new Character(70, "Piranha Plant", "packun-flower"),
+    new Character(71, "Sans Undertale", "sans-undertale", "gif")
 ];
 
 function editableTextBlurred() {
