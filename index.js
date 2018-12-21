@@ -101,7 +101,7 @@ const characters = [
 
 function editableTextBlurred() {
     const html = $(this).val();
-    const viewableText = $("<div class='row'>");
+    const viewableText = $("<span>");
     viewableText.html(html);
     $(this).replaceWith(viewableText);
 
@@ -117,19 +117,30 @@ function makeDivEditable() {
     editableText.blur(editableTextBlurred);
 }
 
-function addColumnToEnd() {
-    $('<div class="column"><div class="row">Title</div><ol style="min-height: 100%;" class="connected-sortable"></ol></div>')
-        .appendTo("#main")
+function addColumn() {
+    const column = $(`
+<div class="column">
+    <div class="row">
+        <span class="inline-editable">Title</span>
+        <button class="remove-col-button">X</button>
+    </div>
+    <ol style="min-height: 100%;" class="connected-sortable">
+    </ol>
+</div>`)
+        .insertBefore("#add-col-column");
+
+    column.find(".inline-editable").click(makeDivEditable);
+    column.find(".remove-col-button").click(c => removeColumn(c.target.parentElement.parentElement));
         
     $(".connected-sortable").sortable({
         connectWith: ".connected-sortable"
     }).disableSelection();
 }
 
-function removeLastColumn() {
-    const toRemove = $("#main").children().last();
-    toRemove.children().appendTo("#start-list");
-    toRemove.remove();
+function removeColumn(column) {
+    column = $(column);
+    column.children().last().children().appendTo("#start-list");
+    column.remove();
 }
 
 $(function() {
@@ -142,14 +153,5 @@ $(function() {
         connectWith: ".connected-sortable"
     }).disableSelection();
 
-    $("div.row").click(makeDivEditable);
-
-    $(document).keypress(function(e) {
-        if (e.which == 61) {
-            addColumnToEnd();
-        }
-        else if (e.which == 45) {
-            removeLastColumn();
-        }
-    });
+    $("#add-col-button").click(addColumn);
 });
