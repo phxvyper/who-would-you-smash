@@ -4,7 +4,7 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 class Character {
-    constructor(number, name, codename) {
+    constructor(number, name, codename, ext) {
         this.number = number;
         this.name = name;
         if (codename) {
@@ -16,7 +16,9 @@ class Character {
                 .replaceAll('&', 'and')
                 .replaceAll('\\.', '');
         }
-        this.image = `./fighters/${this.image}.png`;
+        this.image = `./fighters/${this.image}`;
+        if (!ext) ext = "png";
+        this.image += `.${ext}`;
     }
 }
 
